@@ -7,6 +7,8 @@ use App\OrderProduct;
 use App\Product;
 use App\User;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Schema;
+
 
 class DatabaseSeeder extends Seeder
 {
@@ -18,13 +20,15 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
     	// Clear table
-        Cart::truncate();
-        Category::truncate();
+        Schema::disableForeignKeyConstraints();
+        OrderProduct::truncate();
         CategoryProduct::truncate();
         Order::truncate();
-        OrderProduct::truncate();
+        Cart::truncate();
         Product::truncate();
+        Category::truncate();
         User::truncate();
+        Schema::enableForeignKeyConstraints();
 
         // User
     	$guest = User::create([
