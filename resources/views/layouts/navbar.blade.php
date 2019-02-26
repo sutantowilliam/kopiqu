@@ -23,9 +23,21 @@
 						Category
 					</a>
 					<div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-						@foreach($nav_category as $category)
-							<a class="dropdown-item" href="{{route('category.search', $category->name) }}">{{$category->name}}</a>
-						@endforeach
+                        @foreach($nav_category as $category)
+                        <a class="dropdown-item" href="{{route('category.search', $category->name) }}">{{$category->name}}</a>
+                        @endforeach
+						{{-- @foreach($nav_category as $category)
+                        @if(!isSet($category->parent_id))
+							<a class="dropdown-item font-weight-bold" href="{{route('category.search', $category->name) }}">{{$category->name}}</a>
+                            @foreach($nav_category as $cat)
+                            @if($cat->parent_id==$category->id)
+                            <a class="dropdown-item" href="{{route('category.search', $cat->name) }}">{{$cat->name}}</a>
+                            @endif
+                            @endforeach
+                        @else
+                        <a class="dropdown-item font-weight-bold" href="{{route('category.search', $category->name) }}">{{$category->name}}</a>
+                        @endif
+						@endforeach --}}
 					</div>
 				</li>
             	
@@ -34,7 +46,7 @@
             <!-- Right Side Of Navbar -->
             <ul class="navbar-nav ml-auto">
             	<li class="nav-item">
-					<a class="nav-link" href="#">Carts</a>
+					<a class="nav-link" href="{{ route('cart.index') }}">Carts</a>
 				</li>
             	<!-- Authentication Links -->
                 @guest

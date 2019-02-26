@@ -4,6 +4,7 @@ namespace Laravel\Http\Controllers;
 
 use Laravel\Cart;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class CartController extends Controller
 {
@@ -18,7 +19,7 @@ class CartController extends Controller
      */
     public function index()
     {
-        $carts = Cart::where('user_id', Auth::user()->id)->get()->load('product','product.product_pictures');
+        $carts = Cart::where('user_id', Auth::user()->id)->get();
         return view('cart.index')->with(compact('carts'));
     }
 
@@ -86,11 +87,12 @@ class CartController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \Laravel\Cart  $cart
+     * @param  Integer $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Cart $cart)
+    public function destroy($id)
     {
-        //
+        $cart = Cart::find($id)->delete();
+        return response(204);
     }
 }

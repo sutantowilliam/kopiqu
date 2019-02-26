@@ -10,12 +10,15 @@
 .card {
 	margin:0.3rem;
 }
-
+.success-alert {
+  position: fixed;
+  z-index: 7000;
+}
 </style>
 @endsection
 @section('content')
 <div class="container">
-	<div class="row d-flex" style="padding: 15px;">
+	<div id="product-list" class="row d-flex" style="padding: 15px;">
 		@foreach($products as $product)
 		<div class="col-sm-3 ">
 			<div class="card" style="height: 400px" >
@@ -49,11 +52,17 @@
 		</div>
 		@endforeach
 	</div>
-	<div class="alert-template" style="display:none">
-        <div class="alert alert-success fade in">
-            <strong>Success!</strong> Added to cart. 
+	<div style="display:None">
+		<div class="success-alert alert alert-success" role="alert">
+	  <strong>Success!</strong> Product added to cart. 
+	</div>
+	</div>
+	
+	{{-- <div class="alert-template" style="">
+		<div class="alert alert-success fade in">
+		    <strong>Success!</strong> Product added to cart. 
         </div>
-    </div>
+    </div> --}}
 </div>
 @endsection
 
@@ -86,10 +95,8 @@
                },
                success: function(data)
                {
-                    var alert = $('.alert-template').clone().insertAfter('#products').css('display', 'inline-block').click(function() {
-                      alert.fadeOut( "fast" );
-                    });
-                    console.log(data);
+                    var alert = $('.success-alert').clone().insertBefore('#product-list').delay(1000).fadeOut();
+                  	console.log(data);
                },
                failed: function(data){
                    console.log(data);
