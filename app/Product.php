@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace Laravel;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -15,14 +15,14 @@ class Product extends Model
     ];
 
     public function categories(){
-    	return $this->belongsToMany('App\Category');
+    	return $this->belongsToMany('Laravel\Category');
     }
 
     public function carts(){
-        return $this->hasMany('App\Cart');
+        return $this->hasMany('Laravel\Cart');
     }
 
     public function orders(){
-    	return $this->belongsToMany('App\Order');
+    	return $this->belongsToMany('Laravel\Order');
     }
 }

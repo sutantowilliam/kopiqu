@@ -16,7 +16,7 @@
 @section('content')
 <div class="container">
     <div class="container">
-        <h1 class="category-title" >Category: {{ucfirst($category->name)}}</h1>
+        <h1 class="category-title" >Cart</h1>
     </div>
     <div class="row" style="padding: 15px;">
         @foreach($products as $product)

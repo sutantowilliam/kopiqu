@@ -12,4 +12,13 @@
 */
 Route::get('/','HomeController@index')->name('home');
 
-Route::get('/category/{category_name}', 'CategoryController@search');
+Route::get('/category/{category_name}', 'CategoryController@search')->name('category.search');
+
+Auth::routes();
+
+Route::resources([
+    'cart' => 'CartController',
+    'categories' => 'CategoryController',
+    'orders' => 'OrderController',
+    'products' => 'ProductController',
+]);

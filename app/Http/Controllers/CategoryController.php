@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace Laravel\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Category;
+use Laravel\Category;
 
 class CategoryController extends Controller
 {

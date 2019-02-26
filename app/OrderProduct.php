@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace Laravel;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -14,10 +14,10 @@ class OrderProduct extends Model
     	'sum_weight'
     ];
     public function order(){
-    	return $this->belongsTo('App\Order');
+    	return $this->belongsTo('Laravel\Order');
     }
 
     public function product(){
-        return $this->belongsTo('App\Product');
+        return $this->belongsTo('Laravel\Product');
     }
 }

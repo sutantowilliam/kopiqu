@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace Laravel;
 
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
@@ -29,10 +29,10 @@ class User extends Authenticatable
     ];
 
     public function carts(){
-        return $this->hasMany('App\Cart');
+        return $this->hasMany('Laravel\Cart');
     }
 
     public function orders(){
-        return $this->hasMany('App\Order');
+        return $this->hasMany('Laravel\Order');
     }
 }

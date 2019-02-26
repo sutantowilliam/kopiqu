@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace Laravel;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -18,14 +18,14 @@ class Order extends Model
     ];
 
     public function user(){
-    	return $this->belongsTo('App\User');
+    	return $this->belongsTo('Laravel\User');
     }
 
     public function products(){
-    	return $this->belongsToMany('App\Product');
+    	return $this->belongsToMany('Laravel\Product');
     }
 
     public function order_products(){
-    	return $this->hasMany('App\OrderProduct');
+    	return $this->hasMany('Laravel\OrderProduct');
     }
 }
