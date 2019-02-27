@@ -1,8 +1,9 @@
 <?php
 
 namespace Laravel\Http\Controllers;
-
+use Laravel\PaymentKey;
 use Laravel\Cart;
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -72,6 +73,23 @@ class CartController extends Controller
         //
     }
 
+    public function update_many(Request $request)
+    {
+        // $m="asa";
+        $dataString = $request['cart_data'];
+        $cart_json = json_decode($dataString,true);
+        $dataArray = $cart_json['data'];
+
+        foreach ($dataArray as $newcart) {
+            // $a=$newcart['cart_id'];
+            $cart = Cart::find($newcart['cart_id']);
+            if (isset($cart)) {
+                $cart->update(['quantity'=>$newcart['quantity']]);
+            }
+        }
+        return response(200);
+        // return response($dataString);
+    }
     /**
      * Update the specified resource in storage.
      *
@@ -94,5 +112,11 @@ class CartController extends Controller
     {
         $cart = Cart::find($id)->delete();
         return response(204);
+    }
+
+    public function checkout()
+    {
+        $carts = Cart::where('user_id', Auth::user()->id)->get();
+        return view('cart.checkout')->with(compact('carts'));
     }
 }

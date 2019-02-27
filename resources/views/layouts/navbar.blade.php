@@ -1,14 +1,15 @@
 <style>
-.navbar-brand {
+#logo-kopiqu {
 	font-size: 20pt;
 	font-weight: bold;
 	font-family: Helvetica;
 }
-
 </style>
 <nav class="navbar fixed-top navbar-expand-md navbar-light navbar-laravel">
     <div class="container">
-        <a class="navbar-brand" href="{{ url('/') }}">
+        <a id="logo-kopiqu" class="navbar-brand" style="font-size: 20pt;
+    font-weight: bold;
+    font-family: Helvetica;"href="{{ url('/') }}">
             KOPIQU
         </a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
@@ -45,6 +46,12 @@
 
             <!-- Right Side Of Navbar -->
             <ul class="navbar-nav ml-auto">
+                @guest
+                @else
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ route('orders.index') }}">Orders</a>
+                </li>
+                @endguest
             	<li class="nav-item">
 					<a class="nav-link" href="{{ route('cart.index') }}">Carts</a>
 				</li>

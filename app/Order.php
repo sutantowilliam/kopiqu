@@ -10,11 +10,11 @@ class Order extends Model
     	'user_id',
     	'status',
     	'address',
-    	'sum_price',
-    	'sum_weight',
+    	'total_price',
+    	'total_weight',
     	'shipping_fee',
-    	'unique_id',
-    	'amount'
+    	'payment_key',
+    	'total_payment'
     ];
 
     public function user(){

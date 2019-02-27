@@ -10,8 +10,8 @@ class OrderProduct extends Model
     	'order_id',
     	'product_id',
     	'quantity',
-    	'sum_price',
-    	'sum_weight'
+    	'total_price',
+    	'total_weight'
     ];
     public function order(){
     	return $this->belongsTo('Laravel\Order');

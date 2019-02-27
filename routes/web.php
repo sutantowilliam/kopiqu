@@ -11,8 +11,14 @@
 |
 */
 Route::get('/','HomeController@index')->name('home');
+Route::post('/cart/update_many/','CartController@update_many')->name('cart.update_many');
+Route::get('/cart/checkout/','CartController@checkout')->name('cart.checkout');
 
 Route::get('/category/{category_name}', 'CategoryController@search')->name('category.search');
+
+Route::post('/paymentkey/store','PaymentKeyController@unuse')->name('paymentkey.unuse');
+
+Route::get('/checkout','CheckOutController@index')->name('checkout');
 
 Auth::routes();
 

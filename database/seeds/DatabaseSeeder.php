@@ -1,11 +1,12 @@
 <?php
-use App\Cart;
-use App\Category;
-use App\CategoryProduct;
-use App\Order;
-use App\OrderProduct;
-use App\Product;
-use App\User;
+use Laravel\Cart;
+use Laravel\Category;
+use Laravel\CategoryProduct;
+use Laravel\Order;
+use Laravel\OrderProduct;
+use Laravel\Product;
+use Laravel\User;
+use Laravel\PaymentKey;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Schema;
 
@@ -28,6 +29,7 @@ class DatabaseSeeder extends Seeder
         Product::truncate();
         Category::truncate();
         User::truncate();
+        PaymentKey::truncate();
         Schema::enableForeignKeyConstraints();
 
         // User
@@ -117,6 +119,11 @@ class DatabaseSeeder extends Seeder
         // Order
 	    $order1 = Order::create(['status' => 'PENDING', 'user_id' => $guest->id, 'address' => 'Jl. Dago no 22', 'payment_key'=>111]);
         
+        //PaymentKey 
+        for ($i = 0; $i < 1000; $i++) {
+            PaymentKey::create(['key'=>$i,'used'=>0]);
+        } 
+
         //OrderProduct
         $op11 = OrderProduct::create(['order_id' => $order1->id, 'product_id' => $torajapowder1->id, 'quantity' => 4, 'total_price' => $torajapowder1->price * 4, 'total_weight' => $torajapowder1->weight * 4]);
         $op12 = OrderProduct::create(['order_id' => $order1->id, 'product_id' => $luwakpowder1->id, 'quantity' => 3, 'total_price' => $luwakpowder1->price * 3, 'total_weight' => $luwakpowder1->weight * 3]);

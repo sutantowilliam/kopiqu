@@ -27,9 +27,14 @@ th {
 
 @section('content')
 <div class="container">
-	<div class="container">
+	<div class="container p-3 my-3">
 		<h1 class="category-title" >SHOPPING CART</h1>
 	</div>
+	@if(count($carts)==0)
+	<div class="container bg-light p-3 my-3">
+	Your shopping cart is empty
+	</div>
+	@else
 	<div class="container">
 	<table class="table table-light">
 		<thead>
@@ -59,7 +64,7 @@ th {
 				</div></td>
 				<td id="weight-{{$cart->id}}"class="text-right">{{$cart->product->weight}}</td>
 				<td id="price-{{$cart->id}}" class="text-right">{{$cart->product->price}}</td>
-				<td class=" text-right"><input id="qty-{{$cart->id}}"class=" qty text-center" onchange="calculateTotal({{$cart->id}})" type="number" name="quantity" min="1" value={{$cart->quantity}}></td>
+				<td class=" text-right"><input id="qty-{{$cart->id}}"class="qty text-center" onchange="calculateTotal({{$cart->id}})" type="number" name="quantity" min="1" value={{$cart->quantity}}></td>
 				@php
 					$subtotal_weight = $cart->product->weight*$cart->quantity; 
 					$subtotal_price = $cart->product->price*$cart->quantity;
@@ -77,14 +82,16 @@ th {
 			</tr>
 			<tr>
 				<td colspan="8" class="text-right">
-				<button id="check-out" class="btn btn-success">Proceed to Check Out</button>
-
+					<form id='form-check-out'>
+						<button id="check-out" class="btn btn-success">Proceed to Check Out</button>
+					</form>
 			</td>
 			</tr>
 		</tbody>
 	</table>
 	</div>
 	</div>
+	@endif
 </div>
 
 
@@ -101,7 +108,7 @@ th {
             var form = $(this);
             var url = form.attr('action');
             var id = $(this).attr('id').split('-')[1];
-            console.log(id);
+            // console.log(id);
             $.ajaxSetup({
               headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -122,6 +129,29 @@ th {
             @endguest
         e.preventDefault();
         });
+
+        $("#check-out").click(function(e){
+        	var stringData = getCarts();
+        	$.ajaxSetup({
+				headers: {
+				'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+				}
+			});
+			$.ajax({
+	           	type: "POST",
+	           	url: "{{route('cart.update_many')}}",
+	           	data: {
+	                cart_data: stringData,
+	            },
+	           	success: function(data)
+	           	{
+	              window.location.replace("{{route('cart.checkout')}}");
+	           	},
+	           	failed: function(xhr){
+	            	console.log(xhr.status);
+	           	}
+	        });
+        });
     })
 
 	function calculateTotal(id) {
@@ -132,17 +162,57 @@ th {
         var old_subtotal_weight = parseFloat($("#subtotal-weight-"+id).text());
         var old_total_price = parseFloat($("#total-price").text());
         var old_total_weight = parseFloat($("#total-weight").text());
-        console.log(old_subtotal_weight,old_subtotal_price,old_total_weight,old_total_price);
+
         var new_subtotal_price = qty*price;
         var new_subtotal_weight = qty*weight;
         var new_total_price = old_total_price-old_subtotal_price+new_subtotal_price;
         var new_total_weight = old_total_weight-old_subtotal_weight+new_subtotal_weight;
-        var total_weight = $("#total-weight");
         $("#subtotal-price-"+id).text(new_subtotal_price);
         $("#subtotal-weight-"+id).text(new_subtotal_weight);
         $("#total-price").text(new_total_price);
         $("#total-weight").text(new_total_weight);
 
 	}  
+	function getCarts() {
+		var carts = document.getElementsByClassName("qty");
+		var length = carts.length;
+		var cart_json = new Object();
+		var cart_array = [];
+		for (var i=0; i<length;i++) {
+			var id = carts[i].id.split('-')[1];
+			var element = new Object();
+			element.cart_id = id;
+			element.quantity = parseInt(carts[i].value);
+			cart_array.push(element);
+		}
+		cart_json.data = cart_array;
+		var stringData = JSON.stringify( cart_json );
+		return stringData;
+		
+	}
+	$( window ).bind('beforeunload', function()
+	{
+		var stringData = getCarts();
+		console.log(stringData);
+		$.ajaxSetup({
+			headers: {
+			'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+			}
+		});
+		$.ajax({
+		   	type: "POST",
+		   	url: "{{route('cart.update_many')}}",
+		   	data: {
+		        cart_data: stringData,
+		    },
+		   	success: function(data)
+		   	{
+		      console.log(data);
+		   	},
+		   	failed: function(xhr){
+		    	console.log(xhr.status);
+		   	}
+		});
+	});
 </script>
 @endsection
