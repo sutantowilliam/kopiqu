@@ -110,9 +110,9 @@ th {
 @section('footer')
 <script>
 	$('document').ready(function(){
-		$('#change-button').click(function(e){
-			console.log("as");
-		});
+		// $('#change-button').click(function(e){
+		// 	console.log("as");
+		// });
         $("#order-button").click(function(e) {
         @guest
             window.location.replace("{{ route('login')}}");

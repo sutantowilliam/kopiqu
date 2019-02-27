@@ -11,7 +11,8 @@ class Product extends Model
     	'description',
     	'stock',
     	'price',
-    	'weight'
+    	'weight',
+        'filepath'
     ];
 
     public function categories(){

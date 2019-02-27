@@ -74,8 +74,8 @@
                         
                         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
                             @if(Auth::user()->role)
-                            <a class="dropdown-item" href="{{ route('products.admin') }}">PRODUCT LIST</a>
-                            <a class="dropdown-item"href="{{ route('orders.admin') }}">ORDER LIST</a>
+                            <a class="dropdown-item" href="{{ route('products.admin') }}">Product List</a>
+                            <a class="dropdown-item"href="{{ route('orders.admin') }}">Order List</a>
                             @endif
                             <a class="dropdown-item" href="{{ route('logout') }}"
                                onclick="event.preventDefault();
