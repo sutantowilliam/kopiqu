@@ -21,17 +21,20 @@ th {
 .qty {
 	width:50px;
 }
+.form-opt{
+	width: 120px;
+}
 </style>
 @endsection
 
 @section('content')
 <div class="container">
 	<div class="container my-3">
-		<h1 class="category-title" >YOUR ORDER</h1>
+		<h1 class="category-title" >ORDER</h1>
 	</div>
 	@if(count($orders)==0)
 	<div class="container bg-light p-3 my-3">
-	You have no order 
+	There is no order 
 	</div>
 	@else
 	<div class="container">
@@ -66,7 +69,16 @@ th {
 				<td class=" text-right">{{$order->shipping_fee}}</td>
 				<td class=" text-right">-{{$order->payment_key}}</td>
 				<td class=" text-right">{{$order->total_payment}}</td>
-				<td class=" text-right">{{$order->status}}</td>
+				<td class=" text-right">
+					<form id="form-{{$order->id}}">
+			          	<span id="status-{{$order->id}}">{{$order->status}}</span>
+			          	<select class="form-opt form-control my-1 " name="status">
+			              	<option {{$order->status == 'PAID' ? 'selected' : ''}}>PAID</option>
+			              	<option {{$order->status == 'SHIPPED' ? 'selected' : ''}}>SHIPPED</option>
+			          	</select>
+			          	<button style=""class="btn btn-primary">Update</button>
+			        </form>
+				</td>
 				@endforeach
 			</tr>
 		</tbody>
@@ -81,6 +93,39 @@ th {
 
 @section('footer')
 <script>
+$('document').ready(function(){
+        $("[id^='form-']").submit(function(e) {
+        @guest
+            window.location.replace("{{ route('login')}}");
+        @else
+            var form = $(this);
+            var id = $(this).attr('id').split('-')[1];
+            var url = "/orders/"+id;
 
+            $.ajaxSetup({
+              headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+              }
+            });
+
+            $.ajax({
+               type: "PUT",
+               url: url,
+               data: {
+                    status: form.find('select').val()
+               },
+               success: function(data)
+               {
+                    form.find('#status-'+id).text(form.find('select').val());
+                    console.log(data);
+               },
+               failed: function(data){
+                   console.log(data);
+               }
+             });
+        @endguest
+        e.preventDefault();
+        });
+    })
 </script>
 @endsection

@@ -22,8 +22,16 @@ class OrderController extends Controller
      */
     public function index()
     {
-        $orders = Order::where('user_id', Auth::user()->id)->get();
+        $orders = Order::where('user_id', Auth::user()->id)->orderBy('created_at', 'desc')->get();
+
         return view('order.index')->with(compact('orders'));
+
+    }
+
+    public function admin()
+    {
+        $orders = Order::all();
+        return view('order.admin')->with(compact('orders'));
     }
 
     /**
@@ -98,7 +106,9 @@ class OrderController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $newstatus = $request['status'];
+        $order = Order::find($id)->update(['status'=>$newstatus]);
+        return Response([$id,200,$newstatus]);
     }
 
     /**
@@ -111,4 +121,6 @@ class OrderController extends Controller
     {
         //
     }
+
+
 }

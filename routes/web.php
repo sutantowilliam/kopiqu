@@ -16,7 +16,9 @@ Route::get('/cart/checkout/','CartController@checkout')->name('cart.checkout');
 
 Route::get('/category/{category_name}', 'CategoryController@search')->name('category.search');
 
-Route::post('/paymentkey/store','PaymentKeyController@unuse')->name('paymentkey.unuse');
+Route::get('/admin/product', 'ProductController@admin')->name('products.admin')->middleware('admin');
+
+Route::get('/admin/order', 'OrderController@admin')->name('orders.admin')->middleware('admin');
 
 Route::get('/checkout','CheckOutController@index')->name('checkout');
 
